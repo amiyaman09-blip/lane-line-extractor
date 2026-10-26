@@ -3,7 +3,7 @@ import os
 import cv2
 import numpy as np
 
-IMAGE_PATH = "images/road.png"
+IMAGE_PATH = "road.png"
 SHOW_WINDOWS = False
 
 HORIZON = 0.52
