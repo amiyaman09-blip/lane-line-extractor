@@ -20,7 +20,7 @@ This project detects lane markings in a static road image using Python, OpenCV, 
 ## Project Structure
 
 ```text
-lane-extractor-new/
+lane-line-extractor/
 ├── lane_detector.py
 ├── road.png
 ├── hsv_mask.jpg
@@ -108,6 +108,9 @@ Left and right lane lines in red, with the centre dashes outlined in red.
 - The ROI polygon is tuned for this image. A different camera angle or road would need different values.
 - Each lane boundary is drawn as a straight line, so curved lanes would not be followed accurately.
 - The program processes static images rather than live video.
+
+## Conclusion
+This project demonstrates a basic computer vision pipeline for lane-line detection using OpenCV. It combines colour filtering, blurring, edge detection, ROI masking, and line detection in a modular Python program.
 
 ## Conclusion
 This project demonstrates a basic computer vision pipeline for lane-line detection using OpenCV. It combines colour filtering, blurring, edge detection, ROI masking, and line detection in a modular Python program.
