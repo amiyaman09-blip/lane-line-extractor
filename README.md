@@ -22,14 +22,23 @@ lane-line-extractor/
 │   └── road.png
 ├── image/
 │   └── image2.png
-├── new_image/
-│   ├── blurred.jpg
-│   ├── canny_edges.jpg
-│   ├── colour_mask.jpg
-│   ├── combined_edge_mask.jpg
-│   ├── lane_lines.jpg
-│   ├── roi_edges.jpg
-│   └── roi_preview.jpg
+├── output/
+│   ├── image2/
+│   │   ├── blurred.jpg
+│   │   ├── canny_edges.jpg
+│   │   ├── colour_mask.jpg
+│   │   ├── combined_edge_mask.jpg
+│   │   ├── lane_lines.jpg
+│   │   ├── roi_edges.jpg
+│   │   └── roi_preview.jpg
+│   └── new_image/
+│       ├── blurred.jpg
+│       ├── canny_edges.jpg
+│       ├── colour_mask.jpg
+│       ├── combined_edge_mask.jpg
+│       ├── lane_lines.jpg
+│       ├── roi_edges.jpg
+│       └── roi_preview.jpg
 ├── output1/
 │   ├── blurred.jpg
 │   ├── canny_edges.jpg
@@ -84,29 +93,29 @@ py lane_detector.py
 
 ---
 
-### Part 2: Curved Road Scenario (`new_image/` Directory)
+### Part 2: Curved Road Scenario (`output/new_image/` Directory)
 
 #### 1. Load and Process Static Road Image (ROI Preview)
-![Curved ROI Preview](./new_image/roi_preview.jpg)
+![Curved ROI Preview](./output/new_image/roi_preview.jpg)
 
 #### 2. HSV Color Space Transformation
 - **Isolated Target Markings:**
-![Curved Color Mask](./new_image/colour_mask.jpg)
+![Curved Color Mask](./output/new_image/colour_mask.jpg)
 
 - **Combined Tracking Layers:**
-![Curved Combined Edge](./new_image/combined_edge_mask.jpg)
+![Curved Combined Edge](./output/new_image/combined_edge_mask.jpg)
 
 #### 3. Gaussian Blur Mask Output
-![Curved Blurred Mask](./new_image/blurred.jpg)
+![Curved Blurred Mask](./output/new_image/blurred.jpg)
 
 #### 4. Canny Edge Detection Grid
-![Curved Canny Edges](./new_image/canny_edges.jpg)
+![Curved Canny Edges](./output/new_image/canny_edges.jpg)
 
 #### 5. Region of Interest (ROI) Masking
-![Curved ROI Edges](./new_image/roi_edges.jpg)
+![Curved ROI Edges](./output/new_image/roi_edges.jpg)
 
 #### Successfully Extracted Lane Lines (Final Output)
-![Curved Final Lanes Output](./new_image/lane_lines.jpg)
+![Curved Final Lanes Output](./output/new_image/lane_lines.jpg)
 
 ---
 
