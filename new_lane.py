@@ -15,13 +15,12 @@ IMAGES = [
 ]
 
 SHOW_WINDOWS = False
-MIN_COMPONENT_AREA = 80   # Lowered to capture thinner line fragments in perspective distance
+MIN_COMPONENT_AREA = 80  
 MIN_VERTICAL_EXTENT = 0.10
 
-NUM_WINDOWS = 35          # Increased windows to track tighter step sections smoothly
+NUM_WINDOWS = 35        
 WINDOW_MARGIN = 45        
 
-# Keep yellow threshold standard as its hue remains consistent
 YELLOW_LOW, YELLOW_HIGH = (14, 50, 90), (36, 255, 255)
 
 DRAW_COLOURS = {"white": (0, 0, 255), "yellow": (255, 0, 0)}
@@ -43,19 +42,15 @@ def roi_polygon(width, height, points):
 def extract_adaptive_masks(image):
     """Uses adaptive thresholding to extract lane markings under varying shadows."""
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
-    
-    # Adaptive threshold isolates localized contrast changes (perfect for shadows)
+   
     adaptive_white = cv2.adaptiveThreshold(
         gray, 255, cv2.ADAPTIVE_THRESH_GAUSSIAN_C, 
         cv2.THRESH_BINARY, 51, -15
     )
-    
-    # Filter yellow using standard HSV hue ranges
+
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
     yellow = cv2.inRange(hsv, np.array(YELLOW_LOW), np.array(YELLOW_HIGH))
-    
-    # Clean up the white mask by removing known non-white properties
-    # This prevents the adaptive threshold from catching dark roadside foliage borders
+
     blur_v = hsv[:, :, 2]
     refined_white = cv2.bitwise_and(adaptive_white, adaptive_white, mask=cv2.inRange(blur_v, 110, 255))
     
