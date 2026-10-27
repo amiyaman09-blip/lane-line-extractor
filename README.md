@@ -164,6 +164,3 @@ On winding highway turns, when straight line assumptions completely fail, the sy
 ### Summary & Structural Value
 
 This submission delivers a complete classical computer vision perception solution. By fusing traditional HSV-Canny processing sequences with custom sliding window networks and finite numeric derivative calculations, the system reliably outputs smooth, high-fidelity path estimations across both straight city street corridors and winding highway systems.
-
-## Conclusion
-This framework demonstrates a highly adaptive computer vision solution built to track lane parameters across diverse driving environments. By leveraging local window momentum filters, directional gradients, Hough transforms, and finite difference math, the system delivers precise path estimation for both straight city streets and complex winding highways.
