@@ -20,15 +20,17 @@ This project detects lane markings in a static road image using Python, OpenCV, 
 ## Project Structure
 
 ```text
-lane-extractor-new/
+lane-line-extractor/
 ├── lane_detector.py
-├── road.png
-├── hsv_mask.jpg
-├── colour_mask.jpg
-├── blurred.jpg
-├── canny_edges.jpg
-├── roi_edges.jpg
-├── lane_lines.jpg
+├── images/
+├── output1/
+│   ├── blurred.jpg
+│   ├── canny_edges.jpg
+│   ├── colour_mask.jpg
+│   ├── hsv_mask.jpg
+│   ├── lane_lines.jpg
+│   ├── original.jpg
+│   └── roi_edges.jpg
 └── README.md
 ```
 
@@ -48,7 +50,7 @@ Open the project folder in VS Code, open the terminal, and run:
 py lane_detector.py
 ```
 
-The program loads `road.png` (set by `IMAGE_PATH` at the top of the script), processes it, and saves the results to an `output` folder, which is created automatically if it does not exist. The saved images are the colour mask, the Canny edges, the edges after ROI masking, and the final lane image. Copies of these results are included in this repository so they can be viewed below.
+The program loads the source road image, processes it, and saves the results to an `output1` folder, which is created automatically if it does not exist. The saved images are the colour mask, the Canny edges, the edges after ROI masking, and the final lane image. Copies of these results are included in this repository so they can be viewed below.
 
 To also open preview windows for each stage, set `SHOW_WINDOWS = True` near the top of the script. This needs a computer with a display.
 
@@ -75,38 +77,43 @@ To also open preview windows for each stage, set `SHOW_WINDOWS = True` near the 
 ## Results
 
 ### Original Road Image
-![Original road image](road.png)
+![Original road image](output1/original.jpg)
 
 ### HSV Colour Mask
 White and yellow pixels kept after colour filtering.
 
-![HSV colour mask](colour_mask.jpg)
+![HSV colour mask](output1/colour_mask.jpg)
 
 ### Gaussian Blur
 The colour mask after blurring to reduce noise.
 
-![Blurred mask](blurred.jpg)
+![Blurred mask](output1/blurred.jpg)
 
 ### Canny Edge Detection
 Edges found in the blurred colour mask.
 
-![Canny edges](canny_edges.jpg)
+![Canny edges](output1/canny_edges.jpg)
 
 ### Region of Interest
 Edges that remain after masking out everything except the road.
 
-![ROI edges](roi_edges.jpg)
+![ROI edges](output1/roi_edges.jpg)
 
 ### Final Lane Detection
 Left and right lane lines in red, with the centre dashes outlined in red.
 
-![Final lane detection](lane_lines.jpg)
+![Final lane detection](output1/lane_lines.jpg)
 
 ## Limitations
 - Detection accuracy depends on lane-marking visibility, lighting, and road conditions.
 - White or yellow objects other than lane markings may also be detected before ROI masking.
 - The ROI polygon is tuned for this image. A different camera angle or road would need different values.
 - Each lane boundary is drawn as a straight line, so curved lanes would not be followed accurately.
+- The program processes static images rather than live video.
+
+## Conclusion
+This project demonstrates a basic computer vision pipeline for lane-line detection using OpenCV. It combines colour filtering, blurring, edge detection, ROI masking, and line detection in a modular Python program.
+
 - The program processes static images rather than live video.
 
 ## Conclusion
