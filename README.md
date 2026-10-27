@@ -79,19 +79,19 @@ To open live preview windows on your desktop monitor at each visual stage, chang
 
 ## Results
 
-### Curved Road Profile 1 (Highway Turn)
+### Straight Road Profile 1 (City Corridor)
 *   **Edge Mask Asset:** `output/new_image/combined_edge_mask.jpg`
 *   **ROI Preview Asset:** `output/new_image/roi_preview.jpg`
-*   **Final Lane Detection:** Outlines tracking paths perfectly across sharp curves, accurately placing the green inflection marker at the apex of the turn.
+*   **Final Lane Detection:** Isolates parallel painted indicators and unpainted stone structural curbs perfectly, projecting straight lines cleanly toward the horizon using Probabilistic Hough Transform matching.
 
-![Curved Lane Line Detection Output](output/new_image/lane_lines.jpg)
+![Straight Lane Line Detection Output](output/new_image/lane_lines.jpg)
 
-### Curved Road Profile 2 (S-Curve Route)
+### Curved Road Profile 2 (Highway Turn)
 *   **Edge Mask Asset:** `output/image2/combined_edge_mask.jpg`
 *   **ROI Preview Asset:** `output/image2/roi_preview.jpg`
-*   **Final Lane Detection:** Adapts step-by-step through directional reversals without splitting tracking lines.
+*   **Final Lane Detection:** Adapts step-by-step through high-curvature turns using the dynamic window sweep, placing the green inflection circle cleanly at the apex of the bend.
 
-![S-Curve Lane Detection Output](output/image2/lane_lines.jpg)
+![Curved Lane Detection Output](output/image2/lane_lines.jpg)
 
 ## Limitations
 - Performance depends on clear paint visibility and distinct pavement-to-shoulder contrast breaks.
@@ -100,6 +100,7 @@ To open live preview windows on your desktop monitor at each visual stage, chang
 
 ## Conclusion
 This framework demonstrates a highly adaptive computer vision solution built to track lane parameters across diverse driving environments. By leveraging local window momentum filters, directional gradients, and finite difference math, the system delivers precise real-time path estimation for both straight city streets and complex winding highways.
+
 
 
 ## Conclusion
