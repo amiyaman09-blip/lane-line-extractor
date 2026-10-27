@@ -1,9 +1,8 @@
 import os
-
 import cv2
 import numpy as np
 
-IMAGE_PATH = "road.png"
+IMAGE_PATH = "images/road.png"
 SHOW_WINDOWS = False
 
 HORIZON = 0.52
@@ -29,12 +28,12 @@ def roi_polygon(width, height):
 
 def detect_edges(image):
     hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+    
     white_mask = cv2.inRange(hsv, np.array([0, 0, 190]), np.array([180, 40, 255]))
     yellow_mask = cv2.inRange(hsv, np.array([15, 80, 120]), np.array([35, 255, 255]))
-    colour_mask = cv2.bitwise_or(white_mask, yellow_mask)
-
-    blurred = cv2.GaussianBlur(colour_mask, (5, 5), 0)
-
+    
+    combined_mask = cv2.bitwise_or(white_mask, yellow_mask)
+    blurred = cv2.GaussianBlur(combined_mask, (5, 5), 0)
     edges = cv2.Canny(blurred, 50, 150)
 
     height, width = edges.shape
@@ -42,7 +41,7 @@ def detect_edges(image):
     cv2.fillPoly(roi_mask, roi_polygon(width, height), 255)
     roi_edges = cv2.bitwise_and(edges, roi_mask)
 
-    return colour_mask, edges, roi_edges
+    return white_mask, yellow_mask, combined_mask, blurred, edges, roi_edges
 
 
 def fit_lane(points, y_top, y_bottom):
@@ -126,24 +125,21 @@ def outline_centre_dashes(image, full_image):
 
 def main():
     os.makedirs("output", exist_ok=True)
+    
     image, full_image = load_image(IMAGE_PATH)
-    colour_mask, edges, roi_edges = detect_edges(image)
+    white_mask, yellow_mask, combined_mask, blurred, edges, roi_edges = detect_edges(image)
     lane_image = detect_lanes(image, roi_edges)
     lane_image = outline_centre_dashes(lane_image, full_image)
 
-    cv2.imwrite("output/colour_mask.jpg", colour_mask)
+    cv2.imwrite("output/original.jpg", image)
+    cv2.imwrite("output/hsv_mask.jpg", white_mask)      
+    cv2.imwrite("output/colour_mask.jpg", yellow_mask)  
+    cv2.imwrite("output/blurred.jpg", blurred)
     cv2.imwrite("output/canny_edges.jpg", edges)
     cv2.imwrite("output/roi_edges.jpg", roi_edges)
     cv2.imwrite("output/lane_lines.jpg", lane_image)
-    print("Processing complete. Check the output folder.")
-
-    if SHOW_WINDOWS:
-        for name, img in [("Original", image), ("HSV Colour Mask", colour_mask),
-                          ("Canny Edges", edges), ("ROI Edges", roi_edges),
-                          ("Detected Lane Lines", lane_image)]:
-            cv2.imshow(name, img)
-        cv2.waitKey(0)
-        cv2.destroyAllWindows()
+    
+    print("Processing complete. Check your output folder.")
 
 
 if __name__ == "__main__":
