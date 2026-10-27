@@ -1,19 +1,14 @@
-# Multi-Strategy Lane Line Extractor Using OpenCV
+# Assignment: Classical Computer Vision & Lane Line Extractor
 
 ## Project Overview
-This project detects lane markings across diverse driving scenarios using Python, OpenCV, and NumPy. The engine combines multiple computer vision workflows to process road imagery—ranging from straight street corridors to complex curved highway channels. 
-
-The pipeline handles static image data matrices through advanced localized thresholding, HSV filtering, edge gradient mapping, and dynamic window scanning networks. It incorporates a Probabilistic Hough Line Transform matching block to fit sharp vector models on straight road paths while utilizing an iterative sliding window sweep to map complex curves and compute geometric curve inflections.
+The goal of this project is to build a lane line extractor using OpenCV. Static road images are processed to isolate highway lane lines using classical computer vision techniques, laying the groundwork for perception systems.
 
 ## Objectives
-- Load and process road imagery robustly using modular OpenCV structures.
-- Apply HSV colour filtering to identify white and yellow lane markings.
-- Use Gaussian blur to reduce image noise.
-- Detect edges using the Canny edge detector.
-- Apply ROI masking to focus on the road region.
-- Detect straight line segments with the Probabilistic Hough Line Transform and track complex curves using an iterative sliding window sweep.
-- Locate the geometric bend points of curved paths using discrete finite difference mathematics.
-- Organise the code into reusable Python functions.
+1. Load and process static road images using OpenCV.
+2. Implement HSV color space transformations for robust color filtering.
+3. Apply Gaussian blur to reduce image noise.
+4. Apply Canny edge detection to identify lane boundaries.
+5. Apply Region of Interest (ROI) masking to isolate the road area.
 
 ## Technologies Used
 - Python
@@ -61,41 +56,56 @@ py lane_detector.py
 
 ---
 
-## Part 1: Baseline Straight Road Profile (`output1/` Directory)
+## Processing Pipeline & Results
 
-### 1. Source Input Photo
+### Part 1: Straight Road Scenario (`output1/` Directory)
+
+#### 1. Load and Process Static Road Image
 ![Original road image](output1/original.jpg)
 
-### 2. Isolated HSV Mask (White Markings Only)
-![HSV colour mask](output1/hsv_mask.jpg)
+#### 2. HSV Color Space Transformation (White & Yellow Filtering)
+- **Isolated White Filtering (HSV Mask):**
+![HSV mask](output1/hsv_mask.jpg)
 
-### 3. Isolated Colour Mask (Yellow Markings Only)
-![HSV colour mask](output1/colour_mask.jpg)
+- **Isolated Yellow Filtering (Colour Mask):**
+![Colour mask](output1/colour_mask.jpg)
 
-### 4. Gaussian Blur Mask Output
+#### 3. Gaussian Blur Mask Output
 ![Blurred mask](output1/blurred.jpg)
 
-### 5. Canny Edge Detection Grid
+#### 4. Canny Edge Detection Grid
 ![Canny edges](output1/canny_edges.jpg)
 
-### 6. Bounded Region of Interest (ROI) Masking
+#### 5. Region of Interest (ROI) Masking
 ![ROI edges](output1/roi_edges.jpg)
 
-### 7. Final Master Straight Lane Line Output
+#### Successfully Extracted Lane Lines (Final Output)
 ![Final lane detection](output1/lane_lines.jpg)
 
 ---
 
-## Part 2: Advanced Curved Road Profile (`new_image/` Directory)
+### Part 2: Curved Road Scenario (`new_image/` Directory)
 
-### 1. Combined Edge Mask Grid
-![Curved Combined Edge](new_image/combined_edge_mask.jpg)
-
-### 2. Active ROI Preview Bounding Poly
+#### 1. Load and Process Static Road Image (ROI Preview)
 ![Curved ROI Preview](new_image/roi_preview.jpg)
 
-### 3. Final Master Curved Lane Sliding Window Output
-*The sliding window adapts step-by-step to the shifting lane topology, anchoring a green inflection circle precisely at the curve apex.*
+#### 2. HSV Color Space Transformation
+- **Isolated Target Markings:**
+![Curved Color Mask](new_image/colour_mask.jpg)
+
+- **Combined Tracking Layers:**
+![Curved Combined Edge](new_image/combined_edge_mask.jpg)
+
+#### 3. Gaussian Blur Mask Output
+![Curved Blurred Mask](new_image/blurred.jpg)
+
+#### 4. Canny Edge Detection Grid
+![Curved Canny Edges](new_image/canny_edges.jpg)
+
+#### 5. Region of Interest (ROI) Masking
+![Curved ROI Edges](new_image/roi_edges.jpg)
+
+#### Successfully Extracted Lane Lines (Final Output)
 ![Curved Final Lanes Output](new_image/lane_lines.jpg)
 
 ---
@@ -106,4 +116,5 @@ py lane_detector.py
 - The Region of Interest polygon coordinates are manually configured per image; radical camera positioning changes require updated baseline vector dimensions.
 
 ## Conclusion
-This framework demonstrates a highly adaptive computer vision solution built to track lane parameters across diverse driving environments. By leveraging local window momentum filters, directional gradients, Hough transforms, and finite difference math, the system delivers precise path estimation for both straight city streets and complex winding highways.
+This framework demonstrates a classical computer vision solution built to track lane parameters across diverse driving environments. By leveraging window tracking, directional gradients, Hough transforms, and finite difference math, the system delivers precise path estimation for both straight city streets and winding highways.
+
