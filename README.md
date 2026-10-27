@@ -67,55 +67,85 @@ py lane_detector.py
 
 ## Processing Pipeline & Results
 
-### Part 1: Straight Road Scenario (`output1/` Directory)
+### Part 1: Straight Road Scenarios (Probabilistic Hough Line Transform)
 
-#### 1. Load and Process Static Road Image
+The core code utilizes the **Probabilistic Hough Line Transform (`cv2.HoughLinesP`)** to isolate individual lane line segments. These lines are filtered by structural slope characteristics, grouped by road position, and fitted with robust bounding lines to establish linear path equations. The same Hough optimization block is deployed to outline the dashed center markings cleanly.
+
+#### Baseline Road Configuration (`output1/` Directory)
+
+##### 1. Load and Process Static Road Image
 ![Original road image](./output1/original.jpg)
 
-#### 2. HSV Color Space Transformation (White & Yellow Filtering)
+##### 2. HSV Color Space Transformation (White & Yellow Filtering)
 - **Isolated White Filtering (HSV Mask):**
 ![HSV mask](./output1/hsv_mask.jpg)
 
 - **Isolated Yellow Filtering (Colour Mask):**
 ![Colour mask](./output1/colour_mask.jpg)
 
-#### 3. Gaussian Blur Mask Output
+##### 3. Gaussian Blur Mask Output
 ![Blurred mask](./output1/blurred.jpg)
 
-#### 4. Canny Edge Detection Grid
+##### 4. Canny Edge Detection Grid
 ![Canny edges](./output1/canny_edges.jpg)
 
-#### 5. Region of Interest (ROI) Masking
+##### 5. Region of Interest (ROI) Masking
 ![ROI edges](./output1/roi_edges.jpg)
 
-#### Successfully Extracted Lane Lines (Final Output)
+##### Successfully Extracted Lane Lines via Hough Transform (Final Output)
 ![Final lane detection](./output1/lane_lines.jpg)
 
 ---
 
-### Part 2: Curved Road Scenario (`output/new_image/` Directory)
+#### Alternative Corridor Configuration (`output/new_image/` Directory)
+
+##### 1. Load and Process Static Road Image (ROI Preview)
+![Straight ROI Preview](./output/new_image/roi_preview.jpg)
+
+##### 2. HSV Color Space Transformation
+- **Isolated Target Markings:**
+![Straight Color Mask](./output/new_image/colour_mask.jpg)
+
+- **Combined Tracking Layers:**
+![Straight Combined Edge](./output/new_image/combined_edge_mask.jpg)
+
+##### 3. Gaussian Blur Mask Output
+![Straight Blurred Mask](./output/new_image/blurred.jpg)
+
+##### 4. Canny Edge Detection Grid
+![Straight Canny Edges](./output/new_image/canny_edges.jpg)
+
+##### 5. Region of Interest (ROI) Masking
+![Straight ROI Edges](./output/new_image/roi_edges.jpg)
+
+##### Successfully Extracted Lane Lines via Hough Transform (Final Output)
+![Straight Final Lanes Output](./output/new_image/lane_lines.jpg)
+
+---
+
+### Part 2: Curved Road Scenario (`output/image2/` Directory)
 
 #### 1. Load and Process Static Road Image (ROI Preview)
-![Curved ROI Preview](./output/new_image/roi_preview.jpg)
+![Curved ROI Preview](./output/image2/roi_preview.jpg)
 
 #### 2. HSV Color Space Transformation
 - **Isolated Target Markings:**
-![Curved Color Mask](./output/new_image/colour_mask.jpg)
+![Curved Color Mask](./output/image2/colour_mask.jpg)
 
 - **Combined Tracking Layers:**
-![Curved Combined Edge](./output/new_image/combined_edge_mask.jpg)
+![Curved Combined Edge](./output/image2/combined_edge_mask.jpg)
 
 #### 3. Gaussian Blur Mask Output
-![Curved Blurred Mask](./output/new_image/blurred.jpg)
+![Curved Blurred Mask](./output/image2/blurred.jpg)
 
 #### 4. Canny Edge Detection Grid
-![Curved Canny Edges](./output/new_image/canny_edges.jpg)
+![Curved Canny Edges](./output/image2/canny_edges.jpg)
 
 #### 5. Region of Interest (ROI) Masking
-![Curved ROI Edges](./output/new_image/roi_edges.jpg)
+![Curved ROI Edges](./output/image2/roi_edges.jpg)
 
 #### Successfully Extracted Lane Lines (Final Output)
-![Curved Final Lanes Output](./output/new_image/lane_lines.jpg)
+![Curved Final Lanes Output](./output/image2/lane_lines.jpg)
 
 ---
 
