@@ -1,16 +1,19 @@
-# Lane Line Extractor Using OpenCV
+# Multi-Strategy Lane Line Extractor Using OpenCV
 
 ## Project Overview
-This project detects lane markings in a static road image using Python, OpenCV, and NumPy. The image goes through HSV colour filtering, Gaussian blurring, Canny edge detection, Region of Interest (ROI) masking, and the Probabilistic Hough Line Transform. The program then draws one red line along each of the left and right lane boundaries and outlines the dashed centre markings in red.
+This project detects lane markings across diverse driving scenarios using Python, OpenCV, and NumPy. The engine combines multiple computer vision workflows to process road imagery—ranging from **straight street corridors** to **complex curved highway channels**. 
+
+The pipeline handles static image data matrices through advanced localized thresholding, HSV filtering, edge gradient mapping, and dynamic window scanning networks. It incorporates a **Probabilistic Hough Line Transform** matching block to fit sharp vector models on straight road paths while utilizing an **iterative sliding window sweep** to map complex curves and compute geometric curve inflections.
 
 ## Objectives
-- Load and process a road image using OpenCV.
-- Apply HSV colour filtering to identify white and yellow lane markings.
-- Use Gaussian blur to reduce image noise.
-- Detect edges using the Canny edge detector.
-- Apply ROI masking to focus on the road region.
-- Detect line segments with the Probabilistic Hough Line Transform and merge them into one line per lane boundary.
-- Organise the code into reusable Python functions.
+- Load and process road imagery robustly using modular OpenCV structures.
+- Isolate painted indicators under challenging shadow blocks using dynamic adaptive thresholds.
+- Isolate structural stone curbs and unpainted borders using Sobel directional gradients.
+- Detect short line segments with the **Probabilistic Hough Line Transform** and merge them into clean straight lane boundaries or outline center dash markers.
+- Track complex, reversing S-curves step-by-step using an iterative sliding window algorithm.
+- Locate the geometric bend midpoints of the roadway via discrete finite difference array evaluation.
+- Handle straight vanishing perspectives without throwing script execution shape errors.
+- Organize the entire tracking workflow into reusable, clean Python functions.
 
 ## Technologies Used
 - Python
@@ -22,15 +25,18 @@ This project detects lane markings in a static road image using Python, OpenCV, 
 ```text
 lane-line-extractor/
 ├── lane_detector.py
-├── images/
-├── output1/
-│   ├── blurred.jpg
-│   ├── canny_edges.jpg
-│   ├── colour_mask.jpg
-│   ├── hsv_mask.jpg
-│   ├── lane_lines.jpg
-│   ├── original.jpg
-│   └── roi_edges.jpg
+├── image/
+│   ├── new image.jpeg
+│   └── image2.png
+├── output/
+│   ├── new_image/
+│   │   ├── combined_edge_mask.jpg
+│   │   ├── roi_preview.jpg
+│   │   └── lane_lines.jpg
+│   └── image2/
+│       ├── combined_edge_mask.jpg
+│       ├── roi_preview.jpg
+│       └── lane_lines.jpg
 └── README.md
 ```
 
@@ -50,71 +56,63 @@ Open the project folder in VS Code, open the terminal, and run:
 py lane_detector.py
 ```
 
-The program loads the source road image, processes it, and saves the results to an `output1` folder, which is created automatically if it does not exist. The saved images are the colour mask, the Canny edges, the edges after ROI masking, and the final lane image. Copies of these results are included in this repository so they can be viewed below.
+The program loads the image profile records from the configuration array at the top of the script, processes each image through the pipeline layout, and automatically exports the resulting pictures into structured subfolders under the `output/` directory.
 
-To also open preview windows for each stage, set `SHOW_WINDOWS = True` near the top of the script. This needs a computer with a display.
+To open live preview windows on your desktop monitor at each visual stage, change the global variable `SHOW_WINDOWS = True` near the top of the script before executing.
 
 ## Processing Pipeline
 
-1. **Image Loading:** Loads the road image and resizes a working copy to 960 × 540 pixels. The full-size original is kept for detecting the small, far-away centre dashes.
-2. **HSV Colour Filtering:** Converts the image to HSV and creates masks for white and yellow pixels, which are combined into one colour mask.
-3. **Gaussian Blur:** Smooths the colour mask to reduce noise.
-4. **Canny Edge Detection:** Detects edges in the blurred colour mask.
-5. **Region of Interest (ROI):** Keeps only the edges inside a polygon covering the road area, which removes the sky, trees, and guardrail.
-6. **Hough Line Transform:** Detects short line segments in the remaining edges.
-7. **Lane Visualisation:** Sorts the segments into left and right by slope and position, fits one straight line to each side, and draws them in red. The white centre dashes are found separately and outlined in red. The final image is saved.
+1. **Image Loading & Standardizing:** Loads the image file path and resizes the primary matrix workspace down to a uniform 960 × 540 pixel grid space to maintain consistent structural calculation boundaries.
+2. **Adaptive Value Thresholding & HSV Filtering:** Extracts white markings by balancing local neighborhood brightness levels to avoid data dropouts caused by overhead bridge shadows. Yellow components are isolated via focused HSV color space matrices.
+3. **Gaussian Blur & Directional Curb Processing:** Smooths the color masks to reduce image noise, and runs a Sobel Y-axis gradient convolution matrix over grayscale versions of the image to pick up unpainted brick or stone sidewalk curbs.
+4. **Morphological Cleanup:** Groups loose, scattered edge dots into thick tracking components using structural ellipse morph closing filters, while stripping out thin asphalt reflections via area constraints.
+5. **Region of Interest (ROI) Masking:** Cuts out peripheral distractions like sky blocks, building faces, and roadside tree branches by masking the layer matrices against customized lane geometry vectors.
+6. **Line Extraction (Straight Lanes):** Utilizes the **Probabilistic Hough Line Transform** to detect overlapping segments within straight sections, separating them by slope and position to draw clean, direct vector boundaries and outline dashed center line markings.
+7. **Iterative Sliding Window Sweep (Curved Lanes):** Traces curved roads sequentially from the bottom edge upward. If a line marker breaks or is temporarily hidden, momentum tracking variables project the vector cleanly along its previous direction to keep the tracking line stable.
+8. **Curvature Inflection Tracking:** Evaluates discrete second-order derivative equations across the lane coordinate matrices to locate where a turn reverses direction, marking the exact center of curves with a visual marker.
 
 ## Functions Used
 
-- `load_image()` loads the input image and returns a resized working copy along with the full-size original.
-- `roi_polygon()` returns the road-shaped polygon used for ROI masking.
-- `detect_edges()` applies HSV filtering, Gaussian blur, Canny edge detection, and ROI masking.
-- `fit_lane()` fits one straight line through a group of points.
-- `detect_lanes()` finds line segments with the Hough transform and draws the left and right lane lines.
-- `outline_centre_dashes()` finds the dashed centre markings and outlines them in red.
-- `main()` coordinates the pipeline, saves the output images, and optionally shows preview windows.
+- `load_image()`: Reads target input files and builds the standardized 960 × 540 tracking frame matrix.
+- `roi_polygon()`: Scales coordinate pairs into pixel shapes to construct the active roadway field mask.
+- `colour_masks()` / `extract_adaptive_masks()`: Applies local adaptive thresholds to find white lines and HSV boundaries to capture yellow paint.
+- `extract_structural_curb()`: Evaluates localized image texture changes to spot unpainted pavement borders.
+- `detect_edges()`: Applies HSV filtering, Gaussian blur, Canny edge detection, and ROI masking.
+- `generate_clean_mask()`: Runs structural closing and opening shapes to fix broken paint lines and remove edge noise.
+- `fit_lane()`: Fits one straight line through a group of points.
+- `trace_lane_windows()`: Steps windows upward to trace the road path while applying momentum filters to prevent lines from hooking into roadside grass.
+- `find_discrete_inflection()`: Runs numeric rate-of-change math over the path array to locate the exact center of curves.
+- `outline_centre_dashes()`: Finds dashed center markings and outlines them cleanly.
+- `process_image()`: Runs the entire pipeline for each image and saves the final visualizations.
 
 ## Results
 
-### Original Road Image
-![Original road image](output1/original.jpg)
+### Straight Road Profile 1 (City Corridor)
+Isolates parallel painted indicators and unpainted stone structural curbs perfectly, projecting straight lines cleanly toward the horizon using Probabilistic Hough Transform matching.
 
-### HSV Colour Mask
-White and yellow pixels kept after colour filtering.
+*   **Edge Mask:**
+    ![Straight Edge Mask](output/new_image/combined_edge_mask.jpg)
+*   **ROI Preview:**
+    ![Straight ROI Preview](output/new_image/roi_preview.jpg)
+*   **Final Lane Detection:**
+    ![Straight Lane Line Detection Output](output/new_image/lane_lines.jpg)
 
-![HSV colour mask](output1/colour_mask.jpg)
+---
 
-### Gaussian Blur
-The colour mask after blurring to reduce noise.
+### Curved Road Profile 2 (Highway Turn)
+Adapts step-by-step through high-curvature turns using the dynamic window sweep, placing the green inflection circle cleanly at the apex of the bend.
 
-![Blurred mask](output1/blurred.jpg)
-
-### Canny Edge Detection
-Edges found in the blurred colour mask.
-
-![Canny edges](output1/canny_edges.jpg)
-
-### Region of Interest
-Edges that remain after masking out everything except the road.
-
-![ROI edges](output1/roi_edges.jpg)
-
-### Final Lane Detection
-Left and right lane lines in red, with the centre dashes outlined in red.
-
-![Final lane detection](output1/lane_lines.jpg)
+*   **Edge Mask:**
+    ![Curved Edge Mask](output/image2/combined_edge_mask.jpg)
+*   **ROI Preview:**
+    ![Curved ROI Preview](output/image2/roi_preview.jpg)
+*   **Final Lane Detection:**
+    ![Curved Lane Detection Output](output/image2/lane_lines.jpg)
 
 ## Limitations
-- Detection accuracy depends on lane-marking visibility, lighting, and road conditions.
-- White or yellow objects other than lane markings may also be detected before ROI masking.
-- The ROI polygon is tuned for this image. A different camera angle or road would need different values.
-- Each lane boundary is drawn as a straight line, so curved lanes would not be followed accurately.
-- The program processes static images rather than live video.
+- Performance depends on clear paint visibility and distinct pavement-to-shoulder contrast breaks.
+- Extremely sharp right-angle curves or urban intersections can exceed the horizontal boundaries of the sliding search windows.
+- The Region of Interest polygon coordinates are manually configured per image; radical camera positioning changes require updated baseline vector dimensions.
 
 ## Conclusion
-This project demonstrates a basic computer vision pipeline for lane-line detection using OpenCV. It combines colour filtering, blurring, edge detection, ROI masking, and line detection in a modular Python program.
-
-- The program processes static images rather than live video.
-
-## Conclusion
-This project demonstrates a basic computer vision pipeline for lane-line detection using OpenCV. It combines colour filtering, blurring, edge detection, ROI masking, and line detection in a modular Python program.
+This framework demonstrates a highly adaptive computer vision solution built to track lane parameters across diverse driving environments. By leveraging local window momentum filters, directional gradients, Hough transforms, and finite difference math, the system delivers precise path estimation for both straight city streets and complex winding highways.
