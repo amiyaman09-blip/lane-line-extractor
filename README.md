@@ -1,118 +1,169 @@
-# Multi-Strategy Lane Line Extractor Using OpenCV
+### Submission: Classical Computer Vision Lane Line Extractor
 
-## Project Overview
-This project detects lane markings across diverse driving scenarios using Python, OpenCV, and NumPy. The engine combines multiple computer vision workflows to process road imagery—ranging from **straight street corridors** to **complex curved highway channels**. 
+### Project Overview
 
-The pipeline handles static image data matrices through advanced localized thresholding, HSV filtering, edge gradient mapping, and dynamic window scanning networks. It incorporates a **Probabilistic Hough Line Transform** matching block to fit sharp vector models on straight road paths while utilizing an **iterative sliding window sweep** to map complex curves and compute geometric curve inflections.
+This repository contains a modular computer vision perception pipeline developed to isolate highway lane markings from static imagery using traditional image processing techniques. 
 
-## Objectives
-- Load and process road imagery robustly using modular OpenCV structures.
-- Isolate painted indicators under challenging shadow blocks using dynamic adaptive thresholds.
-- Isolate structural stone curbs and unpainted borders using Sobel directional gradients.
-- Detect short line segments with the **Probabilistic Hough Line Transform** and merge them into clean straight lane boundaries or outline center dash markers.
-- Track complex, reversing S-curves step-by-step using an iterative sliding window algorithm.
-- Locate the geometric bend midpoints of the roadway via discrete finite difference array evaluation.
-- Handle straight vanishing perspectives without throwing script execution shape errors.
-- Organize the entire tracking workflow into reusable, clean Python functions.
+Built initially to fulfill baseline assignment criteria utilizing color-space clustering and geometric line fittings, this project was extended to include an advanced **Dynamic Sliding Window Scanning Matrix** and **Discrete Finite Difference Curvature Evaluation Engine**. The system autonomously handles both high-contrast straight street grids and complex winding highway channels without execution faults. 
 
-## Technologies Used
-- Python
-- OpenCV (`cv2`)
-- NumPy
+### Objectives & Deliverables
 
-## Project Structure
+* **Core Pipeline Implementation:** Developed clean, decoupled, and production-ready Python modules mapping the standard image processing sequence.
+* **Robust Color Space Isolation:** Deployed localized adaptive thresholds alongside multi-channel HSV matrix masks to shield tracking layers from bridge shadows and environmental noise.
+* **Edge & Gradient Context Fusion:** Fused classic Canny edge contours with Sobel directional Y-gradients to safely resolve both unpainted concrete curbs and standard painted lanes.
+* **Dynamic Structural Adaptability (Extra Effort):** Tracked reversing S-curves sequentially via window momentum vectors and mathematically derived lane inflection vertex locations using second-order finite derivative steps.
 
-```text
+### Technologies Used
+
+* **Language:** Python
+* **Core Libraries:** OpenCV (cv2), NumPy, OS File System Utilities
+
+### Repository Structure
+
+text
+
 lane-line-extractor/
 ├── lane_detector.py
+├── road.png
+├── hsv_mask.jpg
+├── colour_mask.jpg
+├── blurred.jpg
+├── canny_edges.jpg
+├── roi_edges.jpg
+├── lane_lines.jpg
 ├── image/
 │   ├── new image.jpeg
 │   └── image2.png
 ├── output/
 │   ├── new_image/
-│   │   ├── combined_edge_mask.jpg
+│   │   ├── colour_mask.jpg
+│   │   ├── blurred.jpg
+│   │   ├── canny_edges.jpg
+│   │   ├── roi_edges.jpg
 │   │   ├── roi_preview.jpg
 │   │   └── lane_lines.jpg
 │   └── image2/
-│       ├── combined_edge_mask.jpg
+│       ├── colour_mask.jpg
+│       ├── blurred.jpg
+│       ├── canny_edges.jpg
+│       ├── roi_edges.jpg
 │       ├── roi_preview.jpg
 │       └── lane_lines.jpg
 └── README.md
-```
 
-## Installation
+Use code with caution.
 
-Install the required libraries:
+### Installation & Setup
 
-```bash
+1. **Clone the Repository:** 
+
+bash
+
+git clone https://github.com/your-username/lane-line-extractor.git
+cd lane-line-extractor
+
+Use code with caution.
+2. **Install Dependencies:** 
+
+bash
+
 py -m pip install opencv-python numpy
-```
 
-## How to Run
+Use code with caution.
+3. **Execution Instructions:** 
 
-Open the project folder in VS Code, open the terminal, and run:
+bash
 
-```bash
 py lane_detector.py
-```
 
-The program loads the image profile records from the configuration array at the top of the script, processes each image through the pipeline layout, and automatically exports the resulting pictures into structured subfolders under the `output/` directory.
+Use code with caution.
 
-To open live preview windows on your desktop monitor at each visual stage, change the global variable `SHOW_WINDOWS = True` near the top of the script before executing.
+*Note: Set the global variable SHOW_WINDOWS = True at the head of lane_detector.py to prompt interactive UI display boxes across each pipeline iteration layer.*
 
-## Processing Pipeline
+### Part 1: Core Assignment Pipeline (Required Deliverables)
 
-1. **Image Loading & Standardizing:** Loads the image file path and resizes the primary matrix workspace down to a uniform 960 × 540 pixel grid space to maintain consistent structural calculation boundaries.
-2. **Adaptive Value Thresholding & HSV Filtering:** Extracts white markings by balancing local neighborhood brightness levels to avoid data dropouts caused by overhead bridge shadows. Yellow components are isolated via focused HSV color space matrices.
-3. **Gaussian Blur & Directional Curb Processing:** Smooths the color masks to reduce image noise, and runs a Sobel Y-axis gradient convolution matrix over grayscale versions of the image to pick up unpainted brick or stone sidewalk curbs.
-4. **Morphological Cleanup:** Groups loose, scattered edge dots into thick tracking components using structural ellipse morph closing filters, while stripping out thin asphalt reflections via area constraints.
-5. **Region of Interest (ROI) Masking:** Cuts out peripheral distractions like sky blocks, building faces, and roadside tree branches by masking the layer matrices against customized lane geometry vectors.
-6. **Line Extraction (Straight Lanes):** Utilizes the **Probabilistic Hough Line Transform** to detect overlapping segments within straight sections, separating them by slope and position to draw clean, direct vector boundaries and outline dashed center line markings.
-7. **Iterative Sliding Window Sweep (Curved Lanes):** Traces curved roads sequentially from the bottom edge upward. If a line marker breaks or is temporarily hidden, momentum tracking variables project the vector cleanly along its previous direction to keep the tracking line stable.
-8. **Curvature Inflection Tracking:** Evaluates discrete second-order derivative equations across the lane coordinate matrices to locate where a turn reverses direction, marking the exact center of curves with a visual marker.
+The core architecture executes a traditional perception sequence designed around localized structural attributes: 
 
-## Functions Used
+1. **Matrix Ingestion:** Image data arrays are read and rescaled down to a standardized uniform 960 × 540 tracking frame workspace to equalize processing velocities.
+2. **HSV Color Filtering:** Grayscale conversions are bypassed initially to segment white and yellow pixels across specific HSV tint matrices, preserving paint context over asphalt.
+3. **Gaussian Convolution:** A 5×5 kernel blur smooths out structural color discontinuities and asphalt surface reflections.
+4. **Canny Structural Mapping:** High and low threshold gradient matrices strip out regional fill and yield pure edge vectors.
+5. **Region of Interest (ROI) Isolation:** Vector coordinates form an explicit geometric polygon bounding box, discarding peripheral context (sky, trees, urban structures) above the horizon line.
+6. **Hough Projection Optimization:** Line fragments found inside the edge array are consolidated using slope constraints, rendering long, direct structural representations.
 
-- `load_image()`: Reads target input files and builds the standardized 960 × 540 tracking frame matrix.
-- `roi_polygon()`: Scales coordinate pairs into pixel shapes to construct the active roadway field mask.
-- `colour_masks()` / `extract_adaptive_masks()`: Applies local adaptive thresholds to find white lines and HSV boundaries to capture yellow paint.
-- `extract_structural_curb()`: Evaluates localized image texture changes to spot unpainted pavement borders.
-- `detect_edges()`: Applies HSV filtering, Gaussian blur, Canny edge detection, and ROI masking.
-- `generate_clean_mask()`: Runs structural closing and opening shapes to fix broken paint lines and remove edge noise.
-- `fit_lane()`: Fits one straight line through a group of points.
-- `trace_lane_windows()`: Steps windows upward to trace the road path while applying momentum filters to prevent lines from hooking into roadside grass.
-- `find_discrete_inflection()`: Runs numeric rate-of-change math over the path array to locate the exact center of curves.
-- `outline_centre_dashes()`: Finds dashed center markings and outlines them cleanly.
-- `process_image()`: Runs the entire pipeline for each image and saves the final visualizations.
+### Baseline Processing Sequence Artifacts
 
-## Results
+#### Stage 1: Source Roadway Image
 
-### Straight Road Profile 1 (City Corridor)
-Isolates parallel painted indicators and unpainted stone structural curbs perfectly, projecting straight lines cleanly toward the horizon using Probabilistic Hough Transform matching.
+ 
 
-*   **Edge Mask:**
-    ![Straight Edge Mask](output/new_image/combined_edge_mask.jpg)
-*   **ROI Preview:**
-    ![Straight ROI Preview](output/new_image/roi_preview.jpg)
-*   **Final Lane Detection:**
-    ![Straight Lane Line Detection Output](output/new_image/lane_lines.jpg)
+#### Stage 2: Combined Color Spaces (HSV White & Yellow)
 
----
+ 
 
-### Curved Road Profile 2 (Highway Turn)
-Adapts step-by-step through high-curvature turns using the dynamic window sweep, placing the green inflection circle cleanly at the apex of the bend.
+#### Stage 3: Post-Convolution Gaussian Smoothing
 
-*   **Edge Mask:**
-    ![Curved Edge Mask](output/image2/combined_edge_mask.jpg)
-*   **ROI Preview:**
-    ![Curved ROI Preview](output/image2/roi_preview.jpg)
-*   **Final Lane Detection:**
-    ![Curved Lane Detection Output](output/image2/lane_lines.jpg)
+ 
 
-## Limitations
-- Performance depends on clear paint visibility and distinct pavement-to-shoulder contrast breaks.
-- Extremely sharp right-angle curves or urban intersections can exceed the horizontal boundaries of the sliding search windows.
-- The Region of Interest polygon coordinates are manually configured per image; radical camera positioning changes require updated baseline vector dimensions.
+#### Stage 4: Canny Edge Grid Generation
+
+ 
+
+#### Stage 5: Bounded Region of Interest Masking
+
+ 
+
+#### Stage 6: Final Line Fitting Projection
+
+ 
+
+### Part 2: Advanced Feature Showcase (Extra-Credit Extensions)
+
+To challenge the limitations of traditional line fitting when managing complex roadway dynamics, an advanced tracking network was built over the baseline architecture. 
+
+### Feature 1: Dynamic Line Realignment (Flattening Artifact Corrections)
+
+When straight city street grids are processed via sequential upward tracking blocks, minor edge anomalies often distort the lane lines. The script calculates a strict R-squared (
+
+R2cap R squared
+𝑅2
+) correlation coefficient. If tracking outputs map with high linearity, the script automatically smooths the data into direct vector lines, preventing jagged artifacts while preserving full tracking integrity. 
+
+### Feature 2: Iterative Sliding Window Tracking & Inflection Mapping
+
+On winding highway turns, when straight line assumptions completely fail, the system falls back onto an iterative upward sliding search grid window. Momentum filters maintain vector trajectory through broken lane paint. A second-order difference derivative block then solves rate-of-change adjustments along the matrix curve to identify the lane's physical inflection point, highlighting the exact curve apex with a green visual anchor. 
+
+### Extra-Credit Visual Demonstrations
+
+#### Straight Road Profile Output (City Corridor)
+
+*Maintains razor-sharp parallel projections toward the vanishing horizon by flattening local tracking jitter.* 
+
+* **Color Mask Output:** output/new_image/colour_mask.jpg
+* **Canny Edges Matrix:** output/new_image/canny_edges.jpg
+* **Active ROI Bounds:** output/new_image/roi_preview.jpg
+
+ 
+
+#### Curved Road Profile Output (Highway Mountain Pass)
+
+*The sliding window adapts step-by-step to the shifting lane topology, anchoring a green inflection circle precisely at the curve apex.* 
+
+* **Color Mask Output:** output/image2/colour_mask.jpg
+* **Canny Edges Matrix:** output/image2/canny_edges.jpg
+* **Active ROI Bounds:** output/image2/roi_preview.jpg
+
+ 
+
+### Operational Constraints & Limits
+
+* **Contrast Dependencies:** System tracking accuracy relies heavily on defined differences between road markings and regional asphalt hues.
+* **ROI Exclusivity:** Bounding polygon coordinate configurations are strictly static per environment template. Drastic camera lens positional updates demand updated geometry initialization parameters.
+* **Angle Caps:** Ultra-sharp right-angle turns or urban street junctions can break out of the search boundaries established by the sliding window widths.
+
+### Summary & Structural Value
+
+This submission delivers a complete classical computer vision perception solution. By fusing traditional HSV-Canny processing sequences with custom sliding window networks and finite numeric derivative calculations, the system reliably outputs smooth, high-fidelity path estimations across both straight city street corridors and winding highway systems.
 
 ## Conclusion
 This framework demonstrates a highly adaptive computer vision solution built to track lane parameters across diverse driving environments. By leveraging local window momentum filters, directional gradients, Hough transforms, and finite difference math, the system delivers precise path estimation for both straight city streets and complex winding highways.
