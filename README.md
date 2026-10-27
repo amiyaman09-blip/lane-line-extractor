@@ -23,12 +23,11 @@ This project detects lane markings in a static road image using Python, OpenCV, 
 lane-line-extractor/
 ├── lane_detector.py
 ├── road.png
-├── hsv_mask.jpg
-├── colour_mask.jpg
-├── blurred.jpg
-├── canny_edges.jpg
-├── roi_edges.jpg
-├── lane_lines.jpg
+├── output/
+│   ├── colour_mask.jpg
+│   ├── canny_edges.jpg
+│   ├── roi_edges.jpg
+│   └── lane_lines.jpg
 └── README.md
 ```
 
@@ -80,27 +79,22 @@ To also open preview windows for each stage, set `SHOW_WINDOWS = True` near the 
 ### HSV Colour Mask
 White and yellow pixels kept after colour filtering.
 
-![HSV colour mask](colour_mask.jpg)
-
-### Gaussian Blur
-The colour mask after blurring to reduce noise.
-
-![Blurred mask](blurred.jpg)
+![HSV colour mask](output/colour_mask.jpg)
 
 ### Canny Edge Detection
 Edges found in the blurred colour mask.
 
-![Canny edges](canny_edges.jpg)
+![Canny edges](output/canny_edges.jpg)
 
 ### Region of Interest
 Edges that remain after masking out everything except the road.
 
-![ROI edges](roi_edges.jpg)
+![ROI edges](output/roi_edges.jpg)
 
 ### Final Lane Detection
 Left and right lane lines in red, with the centre dashes outlined in red.
 
-![Final lane detection](lane_lines.jpg)
+![Final lane detection](output/lane_lines.jpg)
 
 ## Limitations
 - Detection accuracy depends on lane-marking visibility, lighting, and road conditions.
@@ -110,8 +104,4 @@ Left and right lane lines in red, with the centre dashes outlined in red.
 - The program processes static images rather than live video.
 
 ## Conclusion
-This project demonstrates a basic computer vision pipeline for lane-line detection using OpenCV. It combines colour filtering, blurring, edge detection, ROI masking, and line detection in a modular Python program.
-
-## Conclusion
-This project demonstrates a basic computer vision pipeline for lane-line detection using OpenCV. It combines colour filtering, blurring, edge detection, ROI masking, and line detection in a modular Python program.
-This project demonstrates a basic computer vision pipeline for road lane detection using HSV colour filtering, Gaussian blur, Canny edge detection, ROI masking, and Hough line detection.
+This project demonstrates a basic computer vision pipeline for lane-line detection using OpenCV. It combines colour filtering, blurring, edge detection, ROI masking, and line detection in a modular Python program.ad lane detection using HSV colour filtering, Gaussian blur, Canny edge detection, ROI masking, and Hough line detection.
